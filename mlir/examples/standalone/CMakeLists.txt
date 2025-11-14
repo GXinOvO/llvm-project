@@ -77,3 +77,5 @@ if(NOT WIN32)
   add_subdirectory(standalone-plugin)
 endif()
 add_subdirectory(standalone-translate)
+
+add_subdirectory(standalone-runner)

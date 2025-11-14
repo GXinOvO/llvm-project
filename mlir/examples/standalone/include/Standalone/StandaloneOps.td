@@ -40,4 +40,29 @@ def Standalone_FooOp : Standalone_Op<"foo", [Pure,
     }];
 }
 
+def Standalone_LinearOp : Standalone_Op<"linear", [Pure]> {
+  let summary = "A simple scalar linear op: y = x * w + b";
+  let description = [{
+    standalone.linear %x, %w, %b : i32
+
+    is lowered to:
+
+      %m = arith.muli %x, %w : i32
+      %y = arith.addi %m, %b : i32
+  }];
+
+  // 三个 i32 输入，一个 i32 输出
+  let arguments = (ins I32:$input,
+                       I32:$weight,
+                       I32:$bias);
+  let results   = (outs I32:$output);
+
+  // 自定义打印格式：
+  //   standalone.linear %x, %w, %b : i32
+  let assemblyFormat = [{
+    $input `,` $weight `,` $bias attr-dict `:` type($output)
+  }];
+}
+
+
 #endif // STANDALONE_OPS
