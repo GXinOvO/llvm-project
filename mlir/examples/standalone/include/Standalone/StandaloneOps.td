@@ -59,7 +59,7 @@ TableGen的主要用途:
 
   会自动识别summary和description
 */
-def Standalone_LinearOp : Standalone_Op<"linear", [Pure]> {
+def Standalone_LinearIntOp : Standalone_Op<"linear_int", [Pure]> {
   // 一行简介，后面mlir-opt --help时会用到
   let summary = "A simple scalar linear op: y = x * w + b";
   // 一大段文档(支持多行)，也是给help/文档看的，不影响实际语义，只是说明
@@ -91,7 +91,7 @@ def Standalone_LinearOp : Standalone_Op<"linear", [Pure]> {
   //   standalone.linear %x, %w, %b : i32
   // 等同于 %y = standalone.linear %x, %w, %b : i32
   let assemblyFormat = [{
-    $input `,` $weight `,` $bias attr-dict `:` type($output)
+    $input `,` $weight `,` $bias attr-dict `:` type($input)
   }];
 }
 

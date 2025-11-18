@@ -32,14 +32,14 @@ namespace {
   LinearOpLowering: 定义的改写规则类
   继承自OpRewritePattern<LinearOp>，意味着我专门负责把LinearOp改写
  */
-struct LinearOpLowering : public OpRewritePattern<LinearOp> {
+struct LinearIntOpLowering : public OpRewritePattern<LinearIntOp> {
 
   // 把父类构造函数接过来用，方便外面初始化这个pattern
   using OpRewritePattern::OpRewritePattern;
 
   // matchAndRewrite: 核心逻辑，遇到一个LinearOp就会调用一次这里
   // op: 匹配到的那条standalone.linear;   rewrite: 帮你插入到新op、替换旧op的工具
-  LogicalResult matchAndRewrite(LinearOp op,
+  LogicalResult matchAndRewrite(LinearIntOp op,
                                 PatternRewriter &rewriter) const override {
     // getLoc(): 源代码位置，用于报错/调试，可继续沿用
     Location loc = op.getLoc();
@@ -70,22 +70,22 @@ struct LinearOpLowering : public OpRewritePattern<LinearOp> {
   第二类参数OperationPass<func::FuncOp>: 指定这个pass作用于func.func操作
     即: 每次调用runOnOperation时, 当前操作就是func.func
  */
-struct LowerLinearPass
-    : public PassWrapper<LowerLinearPass, OperationPass<func::FuncOp>> {
+struct LowerLinearIntPass
+    : public PassWrapper<LowerLinearIntPass, OperationPass<func::FuncOp>> {
 
   // ★★★ 关键：告诉 PassManager 这个 pass 的命令行名字 ★★★
   // mlir-opt --standalone-lower-linear input.mlir就会触发这个pass
   StringRef getArgument() const override {
     // 这里必须和你在 .td 里 Pass<"..."> 的字符串一致
-    return "standalone-lower-linear";
+    return "standalone-lower-linear-int";
   }
 
   StringRef getDescription() const override {
-    return "Lower standalone.linear to arith.muli + arith.addi";
+    return "Lower standalone.linear_int to arith.muli + arith.addi";
   }
 
   StringRef getName() const override {
-    return "LowerLinearPass";
+    return "LowerLinearIntPass";
   }
 
   /*
@@ -104,7 +104,7 @@ struct LowerLinearPass
     MLIRContext *ctx = func.getContext();
 
     RewritePatternSet patterns(ctx);
-    patterns.add<LinearOpLowering>(ctx);
+    patterns.add<LinearIntOpLowering>(ctx);
 
     if (failed(applyPatternsAndFoldGreedily(func, std::move(patterns))))
       signalPassFailure();
@@ -114,8 +114,8 @@ struct LowerLinearPass
 } // namespace
 
 // 工厂函数，供 TableGen 里 constructor 使用
-std::unique_ptr<mlir::Pass> createLowerLinearPass() {
-  return std::make_unique<LowerLinearPass>();
+std::unique_ptr<mlir::Pass> createLowerLinearIntPass() {
+  return std::make_unique<LowerLinearIntPass>();
 }
 
 } // namespace mlir::standalone

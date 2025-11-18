@@ -27,12 +27,12 @@ def StandaloneSwitchBarFoo: Pass<"standalone-switch-bar-foo", "::mlir::ModuleOp"
   }];
 }
 
-def LowerLinear : Pass<"standalone-lower-linear", "func::FuncOp"> {
-  let summary = "Lower standalone.linear to arith.muli + arith.addi";
+def LowerLinearIntPass : Pass<"standalone-lower-linea-int", "func::FuncOp"> {
+  let summary = "Lower standalone.linear_int to arith.muli + arith.addi";
   let description = [{
-    This pass lowers `standalone.linear` operations:
+    This pass lowers `standalone.linear_int` operations:
 
-      y = standalone.linear(x, w, b)
+      y = standalone.linear_int(x, w, b)
 
     into:
 
@@ -41,7 +41,7 @@ def LowerLinear : Pass<"standalone-lower-linear", "func::FuncOp"> {
   }];
 
   // 对应 C++ 工厂函数（刚刚在 LinearLowering.cpp 里实现的）
-  let constructor = "mlir::standalone::createLowerLinearPass()";
+  let constructor = "mlir::standalone::createLowerLinearIntPass()";
 }
 
 #endif // STANDALONE_PASS

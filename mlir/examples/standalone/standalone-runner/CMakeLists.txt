@@ -7,9 +7,9 @@ set(LIBS
   MLIRStandalone
 )
 
-add_llvm_executable(standalone-runner standalone-runner.cpp)
+add_llvm_executable(linear-int-runner linear_int.cpp)
 
-llvm_update_compile_flags(standalone-runner)
-target_link_libraries(standalone-runner PRIVATE ${LIBS})
+llvm_update_compile_flags(linear-int-runner)
+target_link_libraries(linear-int-runner  PRIVATE ${LIBS})
 
-mlir_check_all_link_libraries(standalone-runner)
+mlir_check_all_link_libraries(linear-int-runner )
