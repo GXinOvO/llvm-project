@@ -95,5 +95,35 @@ def Standalone_LinearIntOp : Standalone_Op<"linear_int", [Pure]> {
   }];
 }
 
+def Standalone_LinearMemOp : Standalone_Op<"linear_mem", []> {
+  let summary = "y = A * x (matrix-vector product)";
+  let description = [{
+    二位矩阵和一维向量的乘法
+
+    - A : memref<MxKxf32>
+    - x : memref<Kxf32>
+    - y : memref<Mxf32>
+
+
+    语义: 对每一行 i.
+      y[i] = sum_j A[i, j] * x[j]
+  }];
+
+  let arguments = (ins
+    AnyMemRef:$matrix,
+    AnyMemRef:$vector,
+    AnyMemRef:$result
+  );
+
+  let results = (outs);
+
+  let assemblyFormat = [{
+    $matrix `,` $vector `,` $result
+      attr-dict `:`
+      type($matrix) `,` type($vector) `,` type($result)
+  }];
+
+}
+
 
 #endif // STANDALONE_OPS

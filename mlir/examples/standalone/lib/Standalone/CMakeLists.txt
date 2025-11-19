@@ -5,6 +5,7 @@ add_mlir_dialect_library(MLIRStandalone
         StandalonePasses.cpp
 
         LinearIntLowering.cpp
+        LinearMemLowering.cpp
 
         ADDITIONAL_HEADER_DIRS
         ${PROJECT_SOURCE_DIR}/include/Standalone

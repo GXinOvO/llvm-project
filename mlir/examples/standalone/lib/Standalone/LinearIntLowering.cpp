@@ -1,12 +1,3 @@
-//===- LinearLowering.cpp - Lower standalone.linear ---------*- C++ -*-===//
-//
-//  把 `standalone.linear` 降成：
-//    %m = arith.muli %x, %w : i32
-//    %y = arith.addi %m, %b : i32
-//
-//===----------------------------------------------------------------------===//
-
-// 引入我的dialect和算子声明(LinearOp的类定义在这里)
 #include "Standalone/StandaloneDialect.h"
 #include "Standalone/StandaloneOps.h"
 #include "Standalone/StandalonePasses.h"
@@ -73,7 +64,6 @@ struct LinearIntOpLowering : public OpRewritePattern<LinearIntOp> {
 struct LowerLinearIntPass
     : public PassWrapper<LowerLinearIntPass, OperationPass<func::FuncOp>> {
 
-  // ★★★ 关键：告诉 PassManager 这个 pass 的命令行名字 ★★★
   // mlir-opt --standalone-lower-linear input.mlir就会触发这个pass
   StringRef getArgument() const override {
     // 这里必须和你在 .td 里 Pass<"..."> 的字符串一致

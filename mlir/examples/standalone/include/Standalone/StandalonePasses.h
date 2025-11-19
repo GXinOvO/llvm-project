@@ -18,6 +18,7 @@ namespace standalone {
 #define GEN_PASS_DECL
 #include "Standalone/StandalonePasses.h.inc"
 std::unique_ptr<mlir::Pass> createLowerLinearIntPass();
+std::unique_ptr<mlir::Pass> createLowerLinearMemPass();
 #define GEN_PASS_REGISTRATION
 #include "Standalone/StandalonePasses.h.inc"
 } // namespace standalone
